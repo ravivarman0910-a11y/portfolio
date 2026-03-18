@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAVIVARMAN | Frontend Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at 20% 15%, rgba(56, 189, 248, 0.18), transparent 45%),
+                  radial-gradient(circle at 75% 80%, rgba(236, 72, 153, 0.14), transparent 55%),
+                  linear-gradient(135deg, #060b1a, #03050f);
+      color: #e2e8f0;
+      line-height: 1.5;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 42px;
+      gap: 20px;
+      background: rgba(6, 11, 26, 0.9);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(12px);
+      z-index: 50;
+    }
+
+    header h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      margin-left: 24px;
+      text-decoration: none;
+      color: rgba(203, 213, 245, 0.9);
+      padding: 8px 10px;
+      border-radius: 10px;
+      transition: 0.25s;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: #020617;
+      background: rgba(56, 189, 248, 0.9);
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.18);
+    }
+
+    .hero {
+      height: 88vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero h2 {
+      font-size: clamp(2.4rem, 5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+    }
+
+    .hero span { color: #38bdf8; }
+
+    .hero p {
+      margin-top: 18px;
+      font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+      color: rgba(148, 163, 184, 0.9);
+      max-width: 680px;
+    }
+
+    .hero .btn {
+      margin-top: 30px;
+      padding: 14px 28px;
+    }
+
+
+    .btn {
+      margin-top: 25px;
+      padding: 12px 25px;
+      background: #38bdf8;
+      color: #020617;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 10px 20px rgba(56, 189, 248, 0.22);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+      box-shadow: 0 16px 32px rgba(56, 189, 248, 0.32);
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      position: relative;
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.15), transparent 55%),
+                  radial-gradient(circle at bottom, rgba(236, 72, 153, 0.12), transparent 55%);
+      animation: floatBG 18s ease-in-out infinite;
+    }
+
+    @keyframes floatBG {
+      0%, 100% { background-position: 0% 0%, 100% 100%; }
+      50% { background-position: 25% 15%, 75% 85%; }
+    }
+
+    .project-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .filter {
+      padding: 10px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .filter:hover {
+      transform: translateY(-1px);
+      border-color: #38bdf8;
+    }
+
+    .filter.active {
+      background: #38bdf8;
+      border-color: #38bdf8;
+      color: #020617;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(56, 189, 248, 0.9);
+      color: #020617;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 100;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-2px);
+    }
+
+    .back-to-top[style*="opacity: 1"] {
+      pointer-events: auto;
+    }
+
+    .card.hide {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    section {
+      padding: 85px 50px;
+      max-width: 1100px;
+      margin: auto;
+      position: relative;
+    }
+
+    .section-divider {
+      position: absolute;
+      left: 50%;
+      top: 15px;
+      width: 84px;
+      height: 3px;
+      background: rgba(56, 189, 248, 0.35);
+      transform: translateX(-50%);
+      border-radius: 999px;
+    }
+
+    h3 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #38bdf8;
+      letter-spacing: 0.02em;
+    }
+
+    h4 {
+      font-size: 1.25rem;
+      color: #e2e8f0;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: rgba(203, 213, 245, 0.84);
+    }
+
+    .about p { line-height: 1.7; max-width: 780px; margin-top: 16px; }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 26px;
+    }
+
+    .card {
+      background: rgba(30, 41, 59, 0.88);
+      padding: 25px;
+      border-radius: 18px;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(16px);
+      min-height: 190px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card:hover {
+      transform: translateY(-12px);
+      border-color: rgba(56, 189, 248, 0.7);
+      box-shadow: 0 24px 50px rgba(56, 189, 248, 0.22);
+    }
+
+    .card h4 { margin-bottom: 10px; }
+
+    .contact p {
+      margin: 10px 0;
+      max-width: 640px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 26px;
+      margin-top: 22px;
+    }
+
+    .contact-grid a {
+      color: rgba(56, 189, 248, 0.9);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .contact-grid a:hover {
+      color: #38bdf8;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .contact-form label {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: rgba(203, 213, 245, 0.9);
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.75);
+      color: #e2e8f0;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: rgba(56, 189, 248, 0.8);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+
+    .form-note {
+      font-size: 0.9rem;
+      color: rgba(148, 163, 184, 0.9);
+      margin-top: -8px;
+      min-height: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px 20px;
+      background: #020617;
+      color: rgba(148, 163, 184, 0.9);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 720px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      section {
+        padding: 60px 24px;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>RAVIVARMAN</h1>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Hi, I'm <span>RAVIVARMAN</span></h2>
+  <p>I build frontends that feel smooth, make life easier, and stay easy to change — usually with React, a bit of CSS magic, and plenty of refactoring.</p>
+  <button class="btn" onclick="document.getElementById('contact').scrollIntoView()">Say Hello</button>
+</section>
+
+<section id="about" class="about">
+  <h3>About Me</h3>
+  <div class="section-divider"></div>
+  <p>I'm a frontend engineer who likes keeping things simple and useful. Over the past few years I've been building interfaces in React and TypeScript, learning a lot from designers and real users along the way. Outside the screen, I sketch layouts in a notebook and tinker with keyboard shortcuts to stay productive.</p>
+</section>
+
+<section id="skills" class="skills">
+  <h3>Skills & Tools</h3>
+  <div class="section-divider"></div>
+  <div class="projects">
+    <div class="card" data-tech="tool">
+      <h4>React + TypeScript</h4>
+      <p>I like building small pieces (components, hooks) that can be reused without surprise later.</p>
+    </div>
+    <div class="card" data-tech="tool">
+      <h4>Design Systems</h4>
+      <p>Creating a shared set of styles and patterns so products stay consistent as they grow.</p>
+    </div>
+    <div class="card" data-tech="tool">
+      <h4>Performance</h4>
+      <p>Quick load times matter; I use profiling to spot slow spots and keep things snappy.</p>
+    </div>
+    <div class="card" data-tech="tool">
+      <h4>CI/CD & Tooling</h4>
+      <p>Small automations (lint, tests, deploys) keep the codebase clean and deploys painless.</p>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <h3>Projects</h3>
+  <div class="section-divider"></div>
+  <div class="project-filters">
+    <button class="filter active" data-filter="all">All</button>
+    <button class="filter" data-filter="react">React</button>
+    <button class="filter" data-filter="ui">UI/UX</button>
+    <button class="filter" data-filter="tool">Tooling</button>
+  </div>
+
+  <div class="projects">
+    <div class="card" data-tech="react">
+      <h4>Portfolio Website</h4>
+      <p>This site — built to stay fast and clear, with a touch of animation and a lot of polish.</p>
+    </div>
+    <div class="card" data-tech="react">
+      <h4>Interactive Dashboard</h4>
+      <p>A dashboard I built to help teams explore data quickly without waiting for reloads.</p>
+    </div>
+    <div class="card" data-tech="ui">
+      <h4>Design System</h4>
+      <p>Library of UI patterns and tokens that keeps things consistent across multiple pages.</p>
+    </div>
+    <div class="card" data-tech="ui">
+      <h4>Landing Page Animation</h4>
+      <p>A scroll-based micro-interaction experiment that’s fun to explore and easy to tweak.</p>
+    </div>
+    <div class="card" data-tech="tool">
+      <h4>Dev Toolkit</h4>
+      <p>Scripts I use daily to scaffold new apps, run checks, and keep builds clean.</p>
+    </div>
+    <div class="card" data-tech="tool">
+      <h4>CSS Utility Library</h4>
+      <p>Small set of helpers I use when I want a quick layout without pulling in a whole framework.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <h3>Contact</h3>
+  <div class="section-divider"></div>
+  <div class="contact-grid">
+    <div>
+      <p>If you have a project idea, a tricky UI problem, or just want to chat about tools, feel free to reach out. I usually respond within a day.</p>
+      <p><strong>Phone:</strong> 9865427985</p>
+      <p><strong>Email:</strong> <a href="mailto:ravivarman0910@gmail.com">ravivarman0910@gmail.com</a></p>
+    </div>
+
+    <form class="contact-form" onsubmit="handleContactSubmit(event)">
+      <label>
+        Name
+        <input type="text" name="name" placeholder="Your full name" required />
+      </label>
+      <label>
+        Email
+        <input type="email" name="email" placeholder="you@example.com" required />
+      </label>
+      <label>
+        Message
+        <textarea name="message" placeholder="Tell me what you’re working on" rows="4" required></textarea>
+      </label>
+
+      <div class="form-note" aria-live="polite"></div>
+
+      <button type="submit" class="btn">Send message</button>
+    </form>
+  </section>
+
+<footer>
+  <p>© 2026 RAVIVARMAN | Frontend Developer</p>
+</footer>
+
+<!-- Email sending (FormSubmit.co) -->
+<script>
+  const filters = document.querySelectorAll('.filter');
+  const cards = document.querySelectorAll('#projects .projects .card');
+
+  filters.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filters.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+      cards.forEach((card) => {
+        const tech = card.dataset.tech;
+        if (filter === 'all' || tech === filter) {
+          card.classList.remove('hide');
+        } else {
+          card.classList.add('hide');
+        }
+      });
+    });
+  });
+
+  const sections = Array.from(document.querySelectorAll('section[id]'));
+  const navLinks = Array.from(document.querySelectorAll('header nav a'));
+
+  const setActiveLink = () => {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach((section) => {
+      const top = section.offsetTop;
+      const bottom = top + section.offsetHeight;
+      const id = section.id;
+
+      if (scrollPos >= top && scrollPos < bottom) {
+        navLinks.forEach((link) => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+      }
+    });
+  };
+
+  window.addEventListener('scroll', setActiveLink);
+  window.addEventListener('load', setActiveLink);
+
+  const backToTop = document.createElement('button');
+  backToTop.textContent = '↑';
+  backToTop.className = 'back-to-top';
+  backToTop.title = 'Back to top';
+  document.body.appendChild(backToTop);
+
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  window.addEventListener('scroll', () => {
+    backToTop.style.opacity = window.scrollY > 300 ? '1' : '0';
+  });
+
+  function handleContactSubmit(event) {
+    event.preventDefault();
+    const form = event.target;
+    const note = form.querySelector('.form-note');
+
+    const values = {
+      name: form.name.value.trim(),
+      email: form.email.value.trim(),
+      message: form.message.value.trim(),
+    };
+
+    if (!values.name || !values.email || !values.message) {
+      note.textContent = 'Please fill in all fields before sending.';
+      return;
+    }
+
+    note.textContent = 'Sending message…';
+
+    const formData = new URLSearchParams();
+    formData.append('name', values.name);
+    formData.append('email', values.email);
+    formData.append('message', values.message);
+
+    // Optional: Disable FormSubmit's built-in captcha and set a subject.
+    formData.append('_captcha', 'false');
+    formData.append('_subject', `New message from ${values.name}`);
+
+    fetch('https://formsubmit.co/ajax/ravivarman0910@gmail.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formData.toString(),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+        .then(() => {
+        const verifiedKey = 'contactFormVerified';
+        const alreadyVerified = localStorage.getItem(verifiedKey) === 'true';
+
+        if (!alreadyVerified) {
+          note.textContent = 'Thanks! A verification email was just sent — please click the link to enable message delivery.';
+          localStorage.setItem(verifiedKey, 'true');
+        } else {
+          note.textContent = 'Thanks! Your message was sent.';
+        }
+
+        form.reset();
+
+        setTimeout(() => {
+          note.textContent = '';
+        }, 4800);
+      })
+      .catch((error) => {
+        console.error('FormSubmit error:', error);
+        note.textContent = 'Oops! Something went wrong. Please try again later.';
+      });
+  }
+</script>
+
+</body>
+</html>
